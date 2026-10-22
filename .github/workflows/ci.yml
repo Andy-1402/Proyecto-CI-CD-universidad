@@ -86,12 +86,15 @@ jobs:
             .
 
       - name: Verificar que la imagen arranca
+        # Se omite el ENTRYPOINT con --entrypoint: entrypoint.sh espera y migra
+        # contra PostgreSQL, y en este job no hay base de datos. Aqui solo se
+        # comprueba que Django se inicializa dentro de la imagen.
         run: |
           docker images | grep universidad-web
-          docker run --rm \
+          docker run --rm --entrypoint python \
             -e DJANGO_SECRET_KEY=clave-ci \
             ${{ secrets.DOCKERHUB_USERNAME || 'universidad' }}/universidad-web:latest \
-            python manage.py check
+            manage.py check
 
       # --- SIMULACION de la subida a DockerHub -------------------
       # En un entorno real se descomentan los dos pasos siguientes y se

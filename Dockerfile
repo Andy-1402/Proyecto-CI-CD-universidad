@@ -24,6 +24,11 @@ RUN pip install --upgrade pip && pip install -r requirements.txt
 # Ahora si, el codigo de la aplicacion
 COPY . .
 
+# El bit de ejecucion no sobrevive a Git en Windows: se fuerza aqui.
+# staticfiles se crea ANTES del chown para que el volumen de Compose que se
+# monta en esa ruta herede el propietario appuser y no root.
+RUN chmod +x /app/entrypoint.sh && mkdir -p /app/staticfiles
+
 # Usuario sin privilegios (buena practica de seguridad)
 RUN useradd --create-home appuser && chown -R appuser:appuser /app
 USER appuser
