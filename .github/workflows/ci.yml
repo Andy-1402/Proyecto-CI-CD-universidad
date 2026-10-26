@@ -2,7 +2,7 @@ name: CI/CD - Sistema de Gestion Universitaria
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [ main, develop, ci-setup ]
   pull_request:
     branches: [ main ]
 
